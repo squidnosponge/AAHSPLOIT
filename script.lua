@@ -1,4 +1,4 @@
-local versione = "01"
+local versione = "02"
 
 wait(2)
 
