@@ -5,7 +5,7 @@ wait(2)
 
 
 local id = "rbxassetid://8530199464"
-local gui = game:GetObjects(id)[1].Gui
+local gui = game:GetObjects(id)[1]
 
 
 --local gui = script.Parent.Gui
