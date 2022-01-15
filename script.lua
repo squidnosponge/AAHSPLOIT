@@ -5,7 +5,7 @@ wait(2)
 
 
 local id = "rbxassetid://8530199464"
-local gui = game:GetObjects(id)[1]
+local gui = game:GetObjects(id)[1].Gui
 
 
 --local gui = script.Parent.Gui
@@ -477,11 +477,14 @@ do
 			local sound = workspace.ADONIS_SOUND
 			
 			if sound.SoundId == musicsettings.SoundId and sound.Volume == musicsettings.Volume and sound.PlaybackSpeed == musicsettings.PlaybackSpeed then
+				print("allag")
 				return true
 			else
+				print("je")
 				return false
 			end
 		else
+			print("no")
 			return false
 		end
 	end
