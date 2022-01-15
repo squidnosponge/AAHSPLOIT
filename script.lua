@@ -4,11 +4,11 @@ wait(2)
 
 
 
---[[local id = "rbxassetid://8530199464"
+local id = "rbxassetid://8530199464"
 local gui = game:GetObjects(id)[1].Gui
-]]
 
-local gui = script.Parent.Gui
+
+--local gui = script.Parent.Gui
 
 local v1 = string.sub(versione,1,1)
 local v2 = string.sub(versione,2,2)
@@ -17,7 +17,7 @@ gui.Admin.version.Text = "v."..v1.."."..v2
 
 
 
---gui.Parent=game:GetService("CoreGui")
+gui.Parent=game:GetService("CoreGui")
 
 
 
@@ -291,7 +291,7 @@ function jailplr(plr,repet)
 
 	if workspace:FindFirstChild(plr.Name.."_ADONISJAIL") then
 	else
-		--plrserv:Chat(":jail "..plr.Name)
+		plrserv:Chat(":jail "..plr.Name)
 	end
 end
 
@@ -305,7 +305,7 @@ function unjailplr(plr)
 	end
 
 	if workspace:FindFirstChild(plr.Name.."_ADONISJAIL") then
-		--plrserv:Chat(":unjail "..plr.Name)
+		plrserv:Chat(":unjail "..plr.Name)
 	end
 end
 
@@ -360,7 +360,7 @@ do
 				return f3x
 			end
 		else
-			--plrserv:Chat(":f3x")
+			plrserv:Chat(":f3x")
 			local c = 0
 			local found = false
 			
@@ -524,8 +524,8 @@ do
 		
 		local cmd = ":music "..musicsettings.SoundId.." true "..musicsettings.PlaybackSpeed.." "..musicsettings.PlaybackSpeed
 		
-		print(cmd)
-		--plrserv:Chat(cmd)
+		
+		plrserv:Chat(cmd)
 	end
 	
 	function musiclock()
@@ -601,17 +601,6 @@ commands[#commands + 1] =
 
 commands[#commands + 1] =
 	{
-		Name = "f3x",
-
-		Command = "f3x",
-		Func = function(arg)
-			equipf3x()
-		end,
-
-	}
-
-commands[#commands + 1] =
-	{
 		Name = "musiclock",
 
 		Command = "musiclock",
@@ -652,7 +641,7 @@ gui.Admin.TextBox.FocusLost:Connect(function()
 	gui.Admin.TextBox.Text = ""
 end)
 
-game.StarterGui:SetCore("SendNotification", {
+game:GetService("StarterGui"):SetCore("SendNotification", {
 	Title = "AAHSPLOIT LOADED!";
 	Text = "Made by gronk64";
 	Icon = "";
