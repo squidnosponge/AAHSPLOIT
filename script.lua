@@ -1,23 +1,27 @@
-local versione = "02"
+local versione = "03"
+
+local mode = 1
 
 wait(2)
-
-
-
-local id = "rbxassetid://8530199464"
-local gui = game:GetObjects(id)[1]
-
-
---local gui = script.Parent.Gui
 
 local v1 = string.sub(versione,1,1)
 local v2 = string.sub(versione,2,2)
 
-gui.Admin.version.Text = "v."..v1.."."..v2
 
+local gui = {}
 
+if mode == 1 then
+local id = "rbxassetid://8530199464"
+	gui = game:GetObjects(id)[1]
+	
+	gui.Admin.version.Text = "v."..v1.."."..v2
+	gui.Parent=game:GetService("CoreGui")
 
-gui.Parent=game:GetService("CoreGui")
+else
+	gui = script.Parent
+	gui.Admin.version.Text = "v."..v1.."."..v2
+end
+	
 
 
 
@@ -35,7 +39,6 @@ local RunService = game:GetService("RunService")
 
 
 ------------------------------------------------UI FUNCTIONS
-
 local pages = gui.Admin.Pages
 local cntrlpnl = gui.Admin.cntrlpnl
 
@@ -113,7 +116,19 @@ end
 
 ------------------------------------------------Command FUNCTIONS
 
+
 do
+	
+	function chat(msg)
+		if mode == 1 then
+			plrserv:Chat(tostring(msg))
+		else
+			print(tostring(msg))
+		end
+	end
+	
+	
+	
 function list(cmdname)
 
 	local b = exmpl:Clone()
@@ -286,12 +301,12 @@ local jailed = {}
 
 function jailplr(plr,repet)
 	if repet then
-		table.insert(jailed, plr)
+			table.insert(jailed, plr)
 	end
 
 	if workspace:FindFirstChild(plr.Name.."_ADONISJAIL") then
 	else
-		plrserv:Chat(":jail "..plr.Name)
+		chat(":jail "..plr.Name)
 	end
 end
 
@@ -305,14 +320,18 @@ function unjailplr(plr)
 	end
 
 	if workspace:FindFirstChild(plr.Name.."_ADONISJAIL") then
-		plrserv:Chat(":unjail "..plr.Name)
+		chat(":unjail "..plr.Name)
 	end
 end
 
-workspace.ChildRemoved:Connect(function()
-		for i, plr in pairs(jailed) do
-			if plrserv:FindFirstChild(plr) then
-				jailplr(plr)
+	workspace.ChildRemoved:Connect(function()
+		
+		
+		
+		for i, plr in pairs(jailed) do			
+			if plrserv:FindFirstChild(plr.Name) then
+				
+				jailplr(plr,false)
 			
 			end
 		end
@@ -360,7 +379,7 @@ do
 				return f3x
 			end
 		else
-			plrserv:Chat(":f3x")
+			chat(":f3x")
 			local c = 0
 			local found = false
 			
@@ -477,14 +496,11 @@ do
 			local sound = workspace.ADONIS_SOUND
 			
 			if getsoundid(sound) == musicsettings.SoundId and sound.Volume == musicsettings.Volume and sound.PlaybackSpeed == musicsettings.PlaybackSpeed then
-				print("allag")
 				return true
 			else
-				print("je")
 				return false
 			end
 		else
-			print("no")
 			return false
 		end
 	end
@@ -509,7 +525,8 @@ do
 			musicsettings.Volume = sound.Volume
 			musicsettings.dafault = false
 			
-			sound.Changed:Connect(musiclock)
+		
+			
 		end
 	end
 	
@@ -523,22 +540,27 @@ do
 		}
 	end
 	
+	
 	function remusic()
-		
-		local cmd = ":music "..musicsettings.SoundId.." true "..musicsettings.PlaybackSpeed.." "..musicsettings.PlaybackSpeed
-		
-		
-		plrserv:Chat(cmd)
+		chat(":music "..musicsettings.SoundId.." true "..musicsettings.PlaybackSpeed.." "..musicsettings.PlaybackSpeed)
 	end
 	
 	function musiclock()
 		if checkmusic() == true or musicsettings.dafault == true then
-		
+			
 		else
 			
-			remusic()
+				remusic()
+			
 		end
 	end
+	
+	workspace.ChildRemoved:Connect(function(des)
+		if des.Name == "ADONIS_SOUND" and getsoundid(des) == musicsettings.SoundId then
+			musiclock()
+		end
+	end)
+	
 	
 end
 
