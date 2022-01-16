@@ -1,4 +1,4 @@
-local versione = "03"
+local versione = "04"
 
 local mode = 1
 
@@ -542,6 +542,7 @@ do
 	
 	
 	function remusic()
+		wait(1)
 		chat(":music "..musicsettings.SoundId.." true "..musicsettings.PlaybackSpeed.." "..musicsettings.PlaybackSpeed)
 	end
 	
