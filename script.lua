@@ -476,7 +476,7 @@ do
 		if workspace:FindFirstChild("ADONIS_SOUND") then
 			local sound = workspace.ADONIS_SOUND
 			
-			if sound.SoundId == musicsettings.SoundId and sound.Volume == musicsettings.Volume and sound.PlaybackSpeed == musicsettings.PlaybackSpeed then
+			if getsoundid(sound) == musicsettings.SoundId and sound.Volume == musicsettings.Volume and sound.PlaybackSpeed == musicsettings.PlaybackSpeed then
 				print("allag")
 				return true
 			else
@@ -505,7 +505,7 @@ do
 			local sound = workspace.ADONIS_SOUND
 			
 			musicsettings.PlaybackSpeed = sound.PlaybackSpeed
-			musicsettings.SoundId = tostring(getsoundid(sound))
+			musicsettings.SoundId = getsoundid(sound)
 			musicsettings.Volume = sound.Volume
 			musicsettings.dafault = false
 			
@@ -539,15 +539,6 @@ do
 			remusic()
 		end
 	end
-	
-	
-	
-	workspace.DescendantRemoving:Connect(function()
-		
-			musiclock()
-		
-	end)
-	
 	
 end
 
