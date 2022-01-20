@@ -1,6 +1,6 @@
 local versione = "05"
 
-local mode = 1
+local mode = 2
 
 wait(2)
 
@@ -152,8 +152,6 @@ do
 		end
 	end)
 	
-	getsoundid()
-
 
 
 	function list(cmdname)
