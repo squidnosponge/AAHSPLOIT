@@ -1,4 +1,4 @@
-local versione = "04"
+local versione = "05"
 
 local mode = 1
 
@@ -27,7 +27,7 @@ end
 
 local commands = {}
 
-local settingstocreate = {"Anti TP"}
+local settingstocreate = {"Anti TP","Anti Death","Anti ForceView"}
 
 local plrserv = game:GetService("Players")
 local RunServ = game:GetService("RunService")
@@ -118,14 +118,41 @@ end
 
 
 do
-
+	local storedcmds = {}
+	local cmdtimeout = false
+	
+	
+	
+	
+	
+	
 	function chat(msg)
 		if mode == 1 then
 			plrserv:Chat(tostring(msg))
 		else
-			print(tostring(msg))
+			if cmdtimeout == false then
+				cmdtimeout = true
+				print(tostring(msg))
+			else
+				table.insert(storedcmds,msg)
+			end
+				
 		end
 	end
+	
+	
+	
+	local runners = false
+	RunServ.Heartbeat:Connect(function(step)
+		if cmdtimeout == true and runners == false then
+			runners = true
+			wait(2)
+			cmdtimeout = false
+			runners = false
+		end
+	end)
+	
+	getsoundid()
 
 
 
@@ -178,7 +205,7 @@ do
 				end
 			end
 		end
-		
+
 		print(found)
 		return found
 	end
@@ -305,7 +332,7 @@ do
 		if repet then
 			table.insert(punished, plr)
 		end
-		
+
 		if plr.Character.Parent == workspace then
 			chat(":punish "..plr.Name)
 		end
@@ -324,7 +351,7 @@ do
 	end
 
 	workspace.ChildAdded:Connect(function()
-		
+
 		for i, plr in pairs(punished) do			
 			if plrserv:FindFirstChild(plr.Name) then
 
@@ -490,14 +517,14 @@ do
 end
 
 --AntiTp
-
 do
 
 	Check = false
 	Boop = false
+	LastestPos = Vector3.new(0,0,0)
 
 	RunServ.Heartbeat:Connect(function(step)
-		if findsetting("Anti TP").value == true and plrserv.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+		if findsetting("Anti TP").value == true and plrserv.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") and plrserv.LocalPlayer.Character.Humanoid.FloorMaterial ~= Enum.Material.Air then
 			if Check == false and Boop == false then	
 				LastestPos = plrserv.LocalPlayer.Character.HumanoidRootPart.Position	
 				Boop = true
@@ -514,10 +541,41 @@ do
 					Boop = false
 				end
 			end
+		else
+			LastestPos = plrserv.LocalPlayer.Character.HumanoidRootPart.Position
 		end
 	end)
 
 
+end
+
+--Anti forceview
+do
+	local last = ""
+	workspace.Camera.Changed:Connect(function()
+		local sub = workspace.Camera.CameraSubject
+		
+		if findsetting("Anti ForceView").value == true and sub ~= last and sub.ClassName ~= "Humanoid" then
+			last = sub
+				chat(":unview")
+		end
+
+	end)
+end
+--Anti Death
+do
+	local timeout = false
+	
+	RunServ.Heartbeat:Connect(function(step)
+		if timeout == false and findsetting("Anti Death").value == true and plrserv.LocalPlayer.Character:FindFirstChild("Humanoid") and plrserv.LocalPlayer.Character.Humanoid.Health < 1 then
+			timeout = true
+			chat(":reset")
+			wait(2)
+			timeout = false
+		end
+	end)
+	
+	
 end
 
 --MusicLock
@@ -582,7 +640,12 @@ do
 
 	function remusic()
 		wait(1)
-		chat(":music "..musicsettings.SoundId.." true "..musicsettings.PlaybackSpeed.." "..musicsettings.PlaybackSpeed)
+		chat(":music "..musicsettings.SoundId.." true "..musicsettings.PlaybackSpeed.." "..musicsettings.Volume)
+	end
+
+	function remusicsettings()
+		wait(1)
+		chat(":pitch "..musicsettings.PlaybackSpeed.." | "..":volume "..musicsettings.Volume)
 	end
 
 	function musiclock()
@@ -601,8 +664,22 @@ do
 		end
 	end)
 
-
+	
+	workspace.ChildAdded:Connect(function(des)
+		if des.Name == "ADONIS_SOUND" and getsoundid(des) == musicsettings.SoundId then
+			des.Changed:Connect(function()
+				if checkmusic() == true or musicsettings.dafault == true then
+				else
+					
+					remusicsettings()
+				end
+			end)
+		end
+	end)
+	
 end
+
+
 
 ------------------------------------------------CMDS
 
