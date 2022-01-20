@@ -1,6 +1,6 @@
 local versione = "05"
 
-local mode = 2
+local mode = 1
 
 wait(2)
 
